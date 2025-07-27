@@ -1,0 +1,64 @@
+﻿
+@model SanPhamVM
+
+@using BanSua4CE.ViewModels
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>TIỆM SỮA 4CE</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="/lienket/css/style.css">
+</head>
+
+<script src="/lienket/js/script.js"></script>
+
+<body>
+
+
+    <div class="product-container">
+        <div class="product-image">
+            <img id="product-img" src="~/hinhanh/@Model.HinhAnh" alt="@Model.HinhAnh">
+        </div>
+        <div class="product-info">
+            <h3 id="product-name">@Model.TenSp</h3>
+            <p class="brand"><b> Thương hiệu:</b> @Model.TenDanhMuc</p>
+            <p><b> Xuất Xứ: </b>@Model.XuatXu</p>
+            <p><b>Mô Tả</b> @Model.MoTa</p>
+            <b>Đơn Giá: <p style="color:red !important"> @Model.DonGia.ToString("#,##") VNĐ</p></b>
+            <button onclick="addToCart(@Model.IdSp)" style="background-color: #0074D9; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">
+                Mua hàng
+            </button>
+
+       
+        </div>
+    </div>
+
+    <script>
+        function addToCart(productId) {
+            // Gửi yêu cầu AJAX để thêm sản phẩm vào giỏ hàng
+            $.ajax({
+                url: '@Url.Action("ThemGioHang", "GioHang")', // Đường dẫn đến action AddToCart trong controller GioHang
+                type: 'POST',
+                data: { id: productId },
+                success: function (response) {
+                    // Nếu thêm thành công, chuyển hướng đến trang giỏ hàng
+                    window.location.href = '@Url.Action("TrangGioHang", "GioHang")';
+                },
+                error: function (xhr, status, error) {
+                    // Xử lý lỗi nếu có
+                    alert('Có lỗi xảy ra khi thêm sản phẩm vào giỏ hàng.');
+                }
+            });
+        }
+    </script>
+
+   
+
+</body>
+</html>
+

@@ -1,0 +1,215 @@
+﻿@model List<BanSua4CE.Data.DonHang>
+
+@{
+    ViewBag.Title = "Quản lý đơn hàng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    h2 {
+        margin-bottom: 30px;
+        font-weight: 700;
+        font-size: 26px;
+        color: #2c3e50;
+        text-align: center;
+    }
+
+    .main-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 30px;
+        font-family: 'Segoe UI', sans-serif;
+        font-size: 15px;
+        color: #333;
+        box-shadow: 0 0 10px rgba(0,0,0,0.05);
+    }
+
+        .main-table th, .main-table td {
+            border: 1px solid #ddd;
+            padding: 12px 15px;
+            vertical-align: middle;
+        }
+
+        .main-table th {
+            background-color: #f8f9fa;
+            text-align: center;
+            font-weight: bold;
+            color: #333;
+        }
+
+    .col-center {
+        text-align: center;
+        white-space: nowrap;
+    }
+
+    .col-left {
+        text-align: left;
+    }
+
+    .sub-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 5px;
+        background-color: #ffffff;
+        font-size: 14px;
+    }
+
+        .sub-table th, .sub-table td {
+            border: 1px solid #eee;
+            padding: 8px 10px;
+            text-align: center;
+        }
+
+        .sub-table th {
+            background-color: #f0f0f0;
+            font-weight: 600;
+            color: #333;
+        }
+
+    .product-image {
+        max-width: 80px;
+        height: auto;
+        border-radius: 5px;
+        border: 1px solid #ddd;
+    }
+
+    .table-wrapper {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .badge {
+        display: inline-block;
+        padding: 5px 12px;
+        border-radius: 20px;
+        font-size: 0.85em;
+        font-weight: bold;
+        white-space: nowrap;
+        color: #fff;
+    }
+
+    .badge-paid {
+        background-color: #28a745; /* xanh lá */
+    }
+
+    .badge-processing {
+        background-color: #ffc107; /* vàng */
+        color: #212529;
+    }
+
+    .badge-shipping {
+        background-color: #17a2b8; /* xanh dương nhạt */
+    }
+
+    .badge-delivered {
+        background-color: #007bff; /* xanh đậm */
+    }
+
+    .badge-cancelled {
+        background-color: #dc3545; /* đỏ */
+    }
+
+    .badge-refunded {
+        background-color: #6c757d; /* xám */
+    }
+</style>
+
+<div class="table-wrapper">
+    <h2>📦 Quản lý đơn hàng</h2>
+
+    @if (TempData["ThongBao"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert" style="font-size: 15px;">
+            @TempData["ThongBao"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Đóng"></button>
+        </div>
+    }
+
+    <table class="main-table">
+        <thead>
+            <tr>
+                <th class="col-center">Mã đơn</th>
+                <th class="col-left">Khách hàng</th>
+                <th class="col-center">Ngày tạo</th>
+                <th class="col-center">Trạng thái</th>
+                <th class="col-left">Thanh toán</th>
+                <th class="col-left">Chi tiết sản phẩm</th>
+                <th class="col-center">Thao tác</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var donhang in Model)
+            {
+                var badgeClass = donhang.MaTrangThai switch
+                {
+                    "Đã thanh toán" => "badge-paid",
+                    "Đang xử lý" => "badge-processing",
+                    "Đang giao" => "badge-shipping",
+                    "Đã giao" => "badge-delivered",
+                    "Đã hủy" => "badge-cancelled",
+                    "Hoàn tiền" => "badge-refunded",
+                    _ => ""
+                };
+
+                <tr>
+                    <td class="col-center">@donhang.IdDonHang</td>
+                    <td class="col-left">@donhang.IdKhNavigation?.TenKh</td>
+                    <td class="col-center">@donhang.NgayTao</td>
+                    <td class="col-center">
+
+                         <span class="badge @badgeClass">@donhang.MaTrangThai</span>
+                       
+
+                    </td>
+                    <td class="col-left">@donhang.PhuongThucTraTien</td>
+                    <td class="col-left">
+                        <table class="sub-table">
+                            <thead>
+                                <tr>
+                                    <th>Ảnh</th>
+                                    <th>Sản phẩm</th>
+                                    <th>Số lượng</th>
+                                    <th>Đơn giá</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var ct in donhang.ChiTietDonHangs ?? new List<BanSua4CE.Data.ChiTietDonHang>())
+                                {
+                                    <tr>
+                                        <td>
+                                            @if (!string.IsNullOrEmpty(ct.IdSpNavigation?.HinhAnh))
+                                            {
+                                                <img src="~/hinhanh/@ct.IdSpNavigation.HinhAnh" alt="@ct.IdSpNavigation.TenSp" class="product-image" />
+                                            }
+                                            else
+                                            {
+                                                <span>Không có ảnh</span>
+                                            }
+                                        </td>
+                                        <td>@ct.IdSpNavigation?.TenSp</td>
+                                        <td>@ct.SoLuong</td>
+                                        <td>@ct.DonGia.ToString("N0") VNĐ</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </td>
+                    <td class="col-center">
+                        <form asp-action="CapNhatTrangThai" method="post" style="display:flex; align-items:center; gap:6px; flex-direction:column;">
+                            <input type="hidden" name="idDonHang" value="@donhang.IdDonHang" />
+                            <select name="trangThaiMoi" class="form-control" style="width:150px;">
+                                <option value="Đã thanh toán" selected="@("Đã thanh toán" == donhang.MaTrangThai)">Đã thanh toán</option>
+                                <option value="Đang xử lý" selected="@("Đang xử lý" == donhang.MaTrangThai)">Đang xử lý</option>
+                                <option value="Đang giao" selected="@("Đang giao" == donhang.MaTrangThai)">Đang giao</option>
+                                <option value="Đã giao" selected="@("Đã giao" == donhang.MaTrangThai)">Đã giao</option>
+                                <option value="Đã hủy" selected="@("Đã hủy" == donhang.MaTrangThai)">Đã hủy</option>
+                                <option value="Hoàn tiền" selected="@("Hoàn tiền" == donhang.MaTrangThai)">Hoàn tiền</option>
+                            </select>
+                            <button type="submit" class="btn btn-sm btn-primary">Cập nhật</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

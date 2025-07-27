@@ -1,0 +1,129 @@
+﻿@model List<BanSua4CE.Data.DonHang>
+@{
+    ViewData["Title"] = "Lịch Sử Đơn Hàng";
+}
+
+<div class="container my-5">
+    <h3 class="mb-4 text-primary"><i class="fas fa-clipboard-list"></i> Lịch sử đơn hàng</h3>
+
+    @if (TempData["Message"] != null)
+    {
+        <div class="alert alert-success">@TempData["Message"]</div>
+    }
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-warning">@TempData["Error"]</div>
+    }
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info">Bạn chưa có đơn hàng nào.</div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-hover align-middle shadow-sm border rounded">
+                <thead class="table-primary">
+                    <tr>
+                        <th>Mã đơn</th>
+                        <th>Ngày đặt</th>
+                        <th>Trạng thái</th>
+                        <th>Sản phẩm</th>
+                        <th>Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var donhang in Model)
+                    {
+                        var trangThai = donhang.MaTrangThai;
+                        var badgeClass = trangThai switch
+                        {
+                            "Đã thanh toán" => "badge bg-success",
+                            "Chờ xử lý" => "badge bg-warning text-dark",
+                            "Đã hủy" => "badge bg-danger",
+                            "Đang giao" => "badge bg-info text-dark",
+                            _ => "badge bg-secondary"
+                        };
+                        <tr>
+                            <td><strong>@donhang.IdDonHang</strong></td>
+                            <td>@donhang.NgayTao</td>
+                            <td>  <span id="status-@donhang.IdDonHang" class="badge @badgeClass">@trangThai</span></td>
+                            <td>
+                                <table class="table table-sm table-bordered mb-0">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Hình ảnh</th>
+                                            <th>Tên sản phẩm</th>
+                                            <th>Số lượng</th>
+                                            <th>Đơn giá</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var ct in donhang.ChiTietDonHangs ?? new List<BanSua4CE.Data.ChiTietDonHang>())
+                                        {
+                                            <tr>
+                                                <td>
+                                                    <img src="~/hinhanh/@ct.IdSpNavigation.HinhAnh" alt="@ct.IdSpNavigation.TenSp"
+                                                         class="img-fluid" style="width: 60px; height: 60px; object-fit: cover;">
+                                                </td>
+                                                <td>@ct.IdSpNavigation.TenSp</td>
+                                                <td>@ct.SoLuong</td>
+                                                <td>@ct.DonGia.ToString("N0")₫</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </td>
+                            <td>
+                                @if (donhang.MaTrangThai != "Đã thanh toán" &&
+                               donhang.MaTrangThai != "Đã hủy" &&
+                               donhang.MaTrangThai != "Đang giao")
+                                {
+                                    var formId = $"form-huy-{donhang.IdDonHang}";
+                                    var statusId = $"status-{donhang.IdDonHang}";
+                                    <form id="@formId"
+                                          asp-action="HuyDonHang"
+                                          asp-controller="TaiKhoan"
+                                          method="post"
+                                          onsubmit="return huyDonHang(event, '@formId', '@statusId')">
+                                        <input type="hidden" name="id" value="@donhang.IdDonHang" />
+                                        <button type="submit" class="btn btn-sm btn-outline-danger">Hủy đơn</button>
+                                    </form>
+                                }
+
+
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>
+<script>
+    function huyDonHang(event, formId, statusId) {
+        event.preventDefault(); // Ngăn reload trang
+        const form = document.getElementById(formId);
+        const statusSpan = document.getElementById(statusId);
+
+        if (confirm('Bạn có chắc chắn muốn hủy đơn hàng này?')) {
+            // Gửi form (POST)
+            fetch(form.action, {
+                method: 'POST',
+                body: new FormData(form)
+            }).then(res => {
+                if (res.ok) {
+                    // Ẩn form (nút hủy đơn)
+                    form.style.display = 'none';
+
+                    // Cập nhật trạng thái
+                    statusSpan.textContent = 'Đã hủy';
+                    statusSpan.className = 'badge bg-danger';
+                } else {
+                    alert("Đã xảy ra lỗi khi hủy đơn.");
+                }
+            });
+        }
+        return false;
+    }
+</script>

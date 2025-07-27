@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TIỆM SỮA 4CE</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <style>
+        .navbar-nav {
+            margin: auto;
+        }
+        .search-bar {
+            flex-grow: 1;
+            max-width: 440px;
+            display: flex;
+            align-items: center;
+        }
+
+        .search-container {
+            position: relative;
+            width: 100%;
+        }
+
+        .search-container input[type="search"] {
+            width: 100%;
+            border-radius: 25px;
+            padding: 10px 15px;
+            border: 2px solid rgb(63, 9, 169);
+            outline: none;
+            padding-right: 40px; /* Chừa khoảng trống cho icon */
+        }
+
+        .search-icon {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: rgb(63, 9, 169);
+            font-size: 18px;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .search-icon:hover {
+            color: hsl(255, 75%, 51%);
+        }
+        .brand-card {
+            flex: 0 0 12%; /* Điều chỉnh kích thước để nhỏ hơn */
+            margin: 1.2%; /* Tăng khoảng cách giữa các ô */
+            border: 2px solid #007bff; /* Viền xanh dương */
+            border-radius: 10px; /* Bo tròn nhẹ */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s;
+            padding: 10px; /* Giúp hình ảnh không sát viền */
+            height: 80px; /* Giảm chiều cao để làm nhỏ ô */
+            background: #fff; /* Tạo nền trắng để tách biệt hơn */
+        }
+
+        .brand-card img {
+            max-width: 100%; /* Giảm kích thước hình ảnh để vừa ô */
+            max-height: 60px; /* Giới hạn chiều cao hình ảnh */
+            object-fit: contain; /* Giúp ảnh không bị méo */
+            display: block;
+        }
+
+        .brand-card:hover {
+            transform: scale(1.05); /* Hiệu ứng phóng to nhẹ */
+        }
+
+        .product-card {
+            flex: 0 0 18%; /* Điều chỉnh kích thước để gần giống ảnh mẫu */
+            margin: 0.8%; /* Tạo khoảng cách giữa các sản phẩm */
+            border-radius: 12px; /* Bo tròn góc */
+            background: white; /* Nền trắng */
+            padding: 15px; /* Khoảng cách bên trong ô */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Bóng nhẹ */
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .product-card:hover {
+            transform: scale(1.05); /* Phóng to nhẹ khi hover */
+            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.2); /* Bóng đậm hơn */
+        }
+
+        /* Hình ảnh sản phẩm */
+        .product-card img {
+            max-width: 100%;
+            height: auto;
+            object-fit: contain; /* Giữ nguyên tỉ lệ hình ảnh */
+            border-radius: 8px; /* Bo tròn hình ảnh */
+            margin-bottom: 10px;
+        }
+
+        /* Tên sản phẩm */
+        .product-card h5 {
+            font-size: 16px;
+            font-weight: bold;
+            color: #333; /* Màu chữ tối */
+            text-align: center;
+            margin-bottom: 8px;
+        }
+
+        /* Giá sản phẩm */
+        .product-card .price {
+            color: #ff5722; /* Màu cam nổi bật */
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        /* Hỗ trợ thanh toán */
+        .product-card .payment-options {
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+            margin-top: 5px;
+        }
+
+        .product-card .payment-options img {
+            width: 30px;
+            height: auto;
+        }
+
+        /* Button giỏ hàng */
+        .product-card .cart-btn {
+            background: #ff6600; /* Màu cam */
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 8px 15px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .product-card .cart-btn:hover {
+            background: #e65c00; /* Màu cam đậm hơn khi hover */
+        }
+
+       
+        .navbar {
+            background-color: hwb(48 5% 1% / 0.881) !important; /* Nền màu vàng */
+        }
+        /* Phần bao cả navbar-top và navbar chính */
+        .header-container {
+            background-color: hwb(48 5% 1% / 0.881) !important; /* Màu nền đồng nhất */
+             /* Thêm khoảng cách để tránh dính sát */
+        }
+
+        .navbar-top {
+            width: 90%; /* Giảm chiều rộng, bạn có thể chỉnh lại */
+            background-color: hwb(230 6% 33%) !important; /* Màu xanh dương, dùng !important để đảm bảo áp dụng */
+            border-top-left-radius: 20px; /* Bo tròn góc trái */
+            border-bottom-left-radius: 20px;
+            border-right: none;
+            margin-left: auto; /* Đẩy về bên phải */
+            margin-right: 0; /* Không cách lề phải */
+            display: flex;
+            align-items: center; /* Căn giữa nội dung theo chiều dọc */
+            justify-content: center; /* Căn giữa nội dung theo chiều ngang */
+            border-top: 4px solid #fff; /* Viền trắng phía trên */
+            border-left: 4px solid #fff; /* Viền trắng bên trái */
+        }
+
+        .navbar-main {
+            width: 93%;
+            background-color: hwb(230 6% 33%) !important; 
+            color: white;
+            border-top-left-radius: 30px; /* Bo tròn góc trái trên */
+            border-bottom-left-radius: 30px; /* Bo tròn góc trái dưới */
+            border-right: none; /* Loại bỏ viền bên phải */
+            padding: 10px 15px;
+            margin-left: auto; /* Đẩy về bên phải */
+            margin-right: 0; /* Không cách lề phải */
+            display: flex;
+            align-items: center; /* Căn giữa nội dung theo chiều dọc */
+            justify-content: center; /* Căn giữa nội dung theo chiều ngang */
+            border-bottom: 4px solid #fff; /* Viền trắng phía dưới */
+            border-left: 4px solid #fff; /* Viền trắng bên trái */
+        }      
+        .navbar-main .nav-link {
+            color: white !important;
+        }
+
+        .navbar .nav-link {
+            color:white !important; /* Chữ màu xanh dương */
+            font-weight: bold; /* Chữ in đậm */
+        }
+
+        .navbar .nav-link:hover {
+            color: rgb(63, 9, 169) !important; 
+        }
+        
+        .navbar-brand {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 30px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: #ffcc00; /* Màu vàng */
+            text-shadow: 3px 3px 10px rgba(255, 204, 0, 0.6); /* Đổ bóng nhẹ */
+            transition: all 0.3s ease-in-out;
+        }
+
+        .navbar-brand .highlight {
+            color: #ffcc00; /* Màu vàng */
+            font-weight: 900;
+            text-shadow: 3px 3px 10px rgba(255, 204, 0, 0.6);
+
+        }
+
+        .bg-warning .nav-link {
+            color: hwb(230 6% 33%) !important; 
+            font-weight: bold;
+            transition: color 0.3s ease-in-out; 
+        }
+
+        .bg-warning .nav-link:hover {
+            color: hsl(240, 86%, 57%) !important; /* Màu chữ khi hover */
+        }
+
+        .dropdown-menu {
+            background-color: #FFECB3; /* Nền dropdown màu vàng nhạt */
+        }
+
+        .dropdown-item {
+            color: rgb(63, 9, 169) !important; /* Chữ màu xanh dương */
+        }
+
+        .dropdown-item:hover {
+            background-color: hwb(48 5% 1% / 0.881); /* Màu vàng đậm hơn khi hover */
+        }
+
+        .navbar-nav .nav-item .nav-link {
+            transition: background-color 0.3s ease-in-out, transform 0.2s ease-in-out;
+            padding: 10px 15px; /* Thêm khoảng cách để dễ bấm */
+            border-radius: 5px; /* Bo góc nhẹ */
+        }
+
+        .navbar-nav .nav-item .nav-link:hover {
+            background-color: rgba(255, 255, 255, 0.2); /* Nền trong suốt nhẹ */
+            transform: scale(1.05); /* Phóng to nhẹ */
+        }
+        .logo-img {
+            height: 40px; /* Điều chỉnh kích thước logo */
+            width: auto;
+            margin-right: 10px; /* Khoảng cách giữa logo và chữ */
+        }
+        /* Bọc nút giỏ hàng để căn giữa */
+        .cart-container {
+            display: flex;
+            justify-content: center; /* Căn giữa theo chiều ngang */
+            height: 100%; /* Đảm bảo phần tử chiếm đủ không gian */
+        }
+
+        /* Nút giỏ hàng */
+        .cart-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 24px; /* Điều chỉnh kích thước biểu tượng */
+            color: #007bff; /* Màu xanh */
+            transition: transform 0.2s, color 0.3s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 40px; /* Kích thước nút */
+            height: 40px;
+            border-radius: 50%; /* Làm tròn nút */
+        }
+
+        .cart-btn:hover {
+            transform: scale(1.2); /* Hiệu ứng phóng to khi hover */
+            color: #ff6600; /* Đổi màu khi hover */
+        }
+        .card-title {
+            display: -webkit-box;
+            -webkit-line-clamp: 2; /* Giới hạn hiển thị 2 dòng */
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-height: 3em; /* Điều chỉnh chiều cao phù hợp */
+            font-size: 14px; /* Giảm kích thước chữ */
+            color: black; /* Màu chữ nhẹ nhàng hơn */
+        }
+
+
+
+        .footer {
+            background-color: #ffcc00;
+            padding: 12px 0;
+            font-size: 14px;
+            color: #333;
+        }
+
+        .container {
+            width: 80%;
+            margin: auto;
+        }
+
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        .footer-col {
+            width: 23%;
+        }
+
+        .company-info p {
+            margin: 5px 0;
+        }
+
+        .footer-logo {
+            width: 120px;
+            margin-bottom: 10px;
+        }
+
+        .footer-col h4 {
+            font-weight: bold;
+            margin-bottom: 15px;
+            font-size: 16px;  /* Nhỏ hơn */
+            color: #3909a9   /* Màu xanh */
+        }
+
+        .footer-col ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-col ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-col ul li a {
+            color: #333;
+            text-decoration: none;
+        }
+    
+        .subscribe input {
+            width: 80%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-right: 5px;
+        }
+
+        .subscribe button {
+            background-color: #ff6600;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .payment-methods img {
+            width: 40px;
+            margin-right: 5px;
+        }
+
+        .footer-bottom {
+            margin-top: 30px;
+            text-align: center;
+            padding: 5px 0;
+            font-size: 12px;
+        }
+
+        .social-links a {
+            margin: 0 10px;
+            font-size: 20px;
+            color: #333;
+        }
+
+        .certification img {
+            width: 150px;
+            margin-top: 10px;
+        }
+
+        .footer-banner {
+            background-color:  hwb(243 4% 34%); /* Màu xanh */
+            padding: 20px 0;
+            text-align: center;
+        }
+
+        .banner-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            max-width: 80%;
+            margin: auto;
+        }
+
+        .banner-image {
+            width: 200px; /* Chỉnh kích thước ảnh */
+            border-radius: 10%;
+        }
+
+        .banner-text {
+            color: white;
+            text-align: left;
+        }
+
+        .banner-text h2 {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .banner-text p {
+            font-size: 16px;
+        }
+
+        .banner-button {
+            display: inline-block;
+            background-color: #ffcc00;
+            color: #333;
+            padding: 10px 20px;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+
+        .banner-button:hover {
+            background-color: #ff9900;
+        }
+
+        .pagination {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .page-btn {
+            width: 36px;
+            height: 36px;
+            border: none;
+            border-radius: 50%;
+            background: white;
+            color: #002f6c;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        .page-btn.active {
+            background: #002f6c;
+            color: white;
+        }
+
+        .page-btn:hover {
+            background: #0056b3;
+            color: white;
+        }
+
+        .prev, .next {
+            font-size: 18px;
+        }
+
+        .dots {
+            color: #777;
+            font-size: 18px;
+        }
+
+    </style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+
+<script>
+    let currentPage = 2;
+    
+    function goToPage(page) {
+        document.querySelectorAll(".page-btn").forEach(btn => btn.classList.remove("active"));
+        document.querySelectorAll(".page-btn")[page].classList.add("active");
+        currentPage = page;
+    }
+    
+    function prevPage() {
+        if (currentPage > 1) {
+            goToPage(currentPage - 1);
+        }
+    }
+    
+    function nextPage() {
+        if (currentPage < 8) {
+            goToPage(currentPage + 1);
+        }
+    }
+    </script>
+
+<body>
+    <header>
+        <nav class="header-container ">
+            <nav class="navbar navbar-top"></nav>
+
+            <nav class="navbar navbar-expand-lg navbar-light navbar-main">
+                <a class="navbar-brand d-flex align-items-center">
+                    <img src="/logo/logo.png" alt="Logo" class="logo-img">
+                    <span class="highlight">TIỆM SỮA 4CE</span>
+                </a>
+                
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item"><a class="nav-link" href="/pages/index.html">Trang Chủ</a></li>
+                        
+                        <li class="nav-item"><a class="nav-link" href="/pages/contact.html">Liên Hệ</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/pages/gioithieu.html">Giới Thiệu</a></li>
+                    </ul>
+                    <form class="form-inline mx-auto search-bar">
+                        <div class="search-container">
+                            <input class="form-control" type="search" placeholder="Ba mẹ tìm kiếm gì cho con hôm nay" aria-label="Search">
+                            <button type="submit" class="search-icon">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </form>
+                    
+                    
+                    
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="#">
+                                <i class="fas fa-user"></i> Tài khoản
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="#">
+                                <i class="fas fa-shopping-cart"></i> Giỏ hàng
+                            </a>
+                        </li>
+                    </ul>
+    
+                </div>
+            </nav>
+    
+            <nav class="navbar navbar-expand-lg bg-warning">
+                <div class="container d-flex justify-content-between">
+                    <div class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="/sanpham/product.html" id="productDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-bars "></i> Danh mục</a>
+                        <div class="dropdown-menu" aria-labelledby="productDropdown">
+                            <a class="dropdown-item" href="/sanpham/product.html">Tất cả sản phẩm</a>
+                            <a class="dropdown-item" href="/sanpham/suabot.html">Sữa bột</a>
+                            <a class="dropdown-item" href="/sanpham/suatuoi.html">Sữa tươi</a>
+                            <a class="dropdown-item" href="/sanpham/suanuoc.html">Sữa nước</a>
+                        </div>
+                    </div>
+                    
+                    <a href="#" class="nav-link"><i class="fas fa-store"></i> Zalo cửa hàng</a>
+                    
+                    <a href="#" class="nav-link"><i class="fas fa-phone"></i> Hotline: 1800.3979</a>
+                </div>
+            </nav>
+        </nav>
+
+    </header>
+
+    <main class="container mt-5">
+        <section class="hero">
+            <div class="jumbotron text-center">
+                <h1 class="display-4">Xuân tới TIỆM SỮA 4CE nhận quà như ý</h1>
+                <p class="lead">AD đến 28/02</p>
+                <a class="btn btn-primary btn-lg" href="/sanpham/product.html" role="button">Xem Sản Phẩm</a>
+            </div>
+        </section>
+
+        <section class="products">
+            <h5>Thương hiệu</h5>
+            <div class="tab-content" id="productTabContent">
+                <div class="tab-pane fade show active" id="powder-milk" role="tabpanel" aria-labelledby="powder-milk-tab">
+                    <div class="d-flex flex-wrap">
+                        
+                        <div class="card brand-card">
+                            <a href="path/to/brand1.html">
+                                <img src="https://mma.prnewswire.com/media/271488/Abbott_Logo.jpg?p=facebook" class="card-img-top" alt="Sữa Bột 1">
+                            </a>
+                        </div>
+
+                        <div class="card brand-card">
+                            <a href="path/to/brand1.html">
+                                <img src="https://healthycarevietnam.com.vn/wp-content/uploads/2023/04/logo-htc-1024x363.png" class="card-img-top" alt="Sữa Bột 1">
+                            </a>
+                        </div>
+
+                        <div class="card brand-card">
+                            <a href="path/to/brand1.html">
+                                <img src="http://tous-logos.com/wp-content/uploads/2018/01/Nestl%C3%A9-Logo.png" class="card-img-top" alt="Sữa Bột 1">
+                            </a>
+                        </div>
+
+                        <div class="card brand-card">
+                            <a href="path/to/brand1.html">
+                                <img src="https://logowik.com/content/uploads/images/aptamil1714.jpg" class="card-img-top" alt="Sữa Bột 1">
+                            </a>
+                        </div>
+
+                        <div class="card brand-card">
+                            <a href="path/to/brand1.html">
+                                <img src="https://download.logo.wine/logo/Meiji_Seika/Meiji_Seika-Logo.wine.png" class="card-img-top" alt="Sữa Bột 1">
+                            </a>
+                        </div>
+
+                        <div class="card brand-card">
+                            <a href="path/to/brand1.html">
+                                <img src="https://www.popai-global.com/wp-content/uploads/2018/06/friso-logo.jpg" class="card-img-top" alt="Sữa Bột 1">
+                            </a>
+                        </div>
+
+                        <div class="card brand-card">
+                            <a href="path/to/brand1.html">
+                                <img src="https://i.gyazo.com/9f14dbd7ca70d82102cff05cfadf77a7.png" class="card-img-top" alt="Sữa Bột 1">
+                            </a>
+                        </div>
+                        
+                        <div class="card brand-card">
+                            <a href="path/to/brand1.html">
+                                <img src="https://forbes.vn/wp-content/uploads/2022/08/LogoTop25fnb_nutifood.jpg" class="card-img-top" alt="Sữa Bột 1">
+                            </a>
+                        </div>
+
+                        <div class="card brand-card">
+                            <a href="path/to/brand1.html">
+                                <img src="https://thanhs.com.vn/wp-content/uploads/2020/09/image1-1.png" class="card-img-top" alt="Sữa Bột 1">
+                            </a>
+                        </div>
+
+                        <div class="card brand-card">
+                            <a href="path/to/brand1.html">
+                                <img src="https://cdn.tgdd.vn/Files/2023/01/28/1504986/bao-ve-he-tieu-hoa-cho-be-voi-sua-hipp-combiotic-den-tu-chau-au-202301281029486486.jpg" class="card-img-top" alt="Sữa Bột 1">
+                            </a>
+                        </div>
+
+                        <div class="card brand-card">
+                            <a href="path/to/brand1.html">
+                                <img src="https://cdn.nhanlucnganhluat.vn/uploads/images/19A2C2B0/logo/2022-03/Logo%20Nutricare-01.png" class="card-img-top" alt="Sữa Bột 1">
+                            </a>
+                        </div>
+
+                        <div class="card brand-card">
+                            <a href="path/to/brand1.html">
+                                <img src="http://file.hstatic.net/200000315451/collection/7185121e-2db2-411c-8cfe-81d62089a5ca_58daacb3ea634b0d9100fe9aa64dd54a.jpg" class="card-img-top" alt="Sữa Bột 1">
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <h5>Sản Phẩm</h5>
+            <div class="tab-content" id="productTabContent">
+                <div class="tab-pane fade show active" id="powder-milk" role="tabpanel" aria-labelledby="powder-milk-tab">
+                    <div class="d-flex flex-wrap justify-content-center">
+                        <!-- Product 1 -->
+                        <div class="card product-card">
+                            <a href="path/to/product1.html">
+                                <img src="https://cdn-v2.kidsplaza.vn/media/catalog/product/s/u/sua-bot-similac-neosure-370g-cho-tre-sinh-non-0-12-thang-tuoi-1.jpg" class="card-img-top" alt="Sữa Bột 1">
+                            </a>
+                            <div class="card-body">
+                                <a href="path/to/product1.html" class="card-title">Sữa bột Similac Neosure 370g cho trẻ sinh non (0-12 Tháng tuổi)</a>
+                                <p class="card-text">270.000đ</p>
+                                <div class="cart-container">
+                                    <a href="gio-hang.html" class="btn btn-primary cart-btn">
+                                        <i class="fas fa-shopping-cart"></i>
+                                    </a>
+                                </div>                                
+                            </div>
+                        </div>
+                        <!-- Product 2 -->
+                        <div class="card product-card">
+                            <a href="path/to/product2.html">
+                                <img src="https://cdn-v2.kidsplaza.vn/media/catalog/product/s/u/sua-bot-similac-total-comfort-0-360g-danh-cho-tre-0-12-thang-1.jpg" class="card-img-top" alt="Sữa Bột 2">
+                            </a>
+                            <div class="card-body">
+                                <a href="path/to/product2.html" class="card-title">Sữa bột Similac Total Comfort 0+ 360g dành cho trẻ 0-12 tháng</a>
+                                <p class="card-text">310.000đ </p>
+                                 <div class="cart-container">
+                                    <a href="gio-hang.html" class="btn btn-primary cart-btn">
+                                        <i class="fas fa-shopping-cart"></i>
+                                    </a>
+                                </div>  
+                            </div>
+                        </div>
+                        <!-- Product 3 -->
+                        <div class="card product-card">
+                            <a href="path/to/product3.html">
+                                <img src="https://cdn-v2.kidsplaza.vn/media/catalog/product/s/u/sua-bot-similac-5g-so-4-900g-cho-be-1.jpg" class="card-img-top" alt="Sữa Bột 3">
+                            </a>
+                            <div class="card-body">
+                                <a href="path/to/product3.html" class="card-title">Sữa Similac 5G S4/2+ 900g/850g</a>
+                                <p class="card-text">519.000đ </p>
+                                 <div class="cart-container">
+                                    <a href="gio-hang.html" class="btn btn-primary cart-btn">
+                                        <i class="fas fa-shopping-cart"></i>
+                                    </a>
+                                </div>  
+                            </div>
+                        </div>
+                        <!-- Product 4 -->
+                        <div class="card product-card">
+                            <a href="path/to/product4.html">
+                                <img src="https://cdn-v2.kidsplaza.vn/media/catalog/product/s/u/sua-nan-optipro-plus-so-4-5hmo-800g-cho-be-2-6-tuoi-20.jpg" class="card-img-top" alt="Sữa Bột 4">
+                            </a>
+                            <div class="card-body">
+                                <a href="path/to/product4.html" class="card-title">Sữa Nan Optipro Plus số 4 5HMO 800g cho bé 2-6 tuổi</a>
+                                <p class="card-text">455.000đ  </p>
+                                 <div class="cart-container">
+                                    <a href="gio-hang.html" class="btn btn-primary cart-btn">
+                                        <i class="fas fa-shopping-cart"></i>
+                                    </a>
+                                </div>  
+                            </div>
+                        </div>
+                        <!-- Product 5 -->
+                        <div class="card product-card">
+                            <a href="path/to/product5.html">
+                                <img src="https://cdn-v2.kidsplaza.vn/media/catalog/product/s/u/sua-nan-infinipro-a2-so-1-400g-cho-be-0-12-thang-tuoi-a.jpg" class="card-img-top" alt="Sữa Bột 5">
+                            </a>
+                            <div class="card-body">
+                                <a href="path/to/product5.html" class="card-title">Sữa Nan InfiniPro A2 số 1 400g cho bé 0-12 tháng tuổi</a>
+                                <p class="card-text">385.000đ </p>
+                                 <div class="cart-container">
+                                    <a href="gio-hang.html" class="btn btn-primary cart-btn">
+                                        <i class="fas fa-shopping-cart"></i>
+                                    </a>
+                                </div>  
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="pagination">
+            <button class="page-btn prev" onclick="prevPage()">❮</button>
+            <button class="page-btn active" onclick="goToPage(1)">1</button>
+            <button class="page-btn " onclick="goToPage(2)">2</button>
+            <button class="page-btn" onclick="goToPage(3)">3</button>
+            <button class="page-btn" onclick="goToPage(4)">4</button>
+            <button class="page-btn" onclick="goToPage(5)">5</button>
+            <span class="dots">...</span>
+            <button class="page-btn" onclick="goToPage(8)">8</button>
+            <button class="page-btn next" onclick="nextPage()">❯</button>
+        </div>
+        
+    </main>
+
+    <div class="footer-banner">
+        <div class="banner-content">
+            <img src="https://cdn.tgdd.vn/Files/2020/08/03/1276201/huong-dan-cac-buoc-chi-tiet-cho-be-bu-binh-cac-me--8.jpg" alt="Tải App KidsPlaza" class="banner-image">
+            <div class="banner-text">
+                <h2>HÃY ĐẾN TIỆM SỮA 4CE MUA SẮM NGAY !</h2>
+                <p>Nhận quà bao la, mua sắm tiện lợi hơn!</p>
+                <a href="https://www.kidsplaza.vn/tai-app-mobile" class="banner-button">Mua ngay</a>
+            </div>
+        </div>
+    </div>
+    
+
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <!-- Logo và thông tin công ty -->
+                <div class="footer-col company-info">
+                    <img src="/logo/logo.png" alt="KidsPlaza" class="footer-logo">
+                    <p><strong>Đơn vị chủ quản:</strong> Công ty Cổ phần 4CE</p>
+                    <p><strong>Địa chỉ:</strong> Đường số 7, Phường Cái Khế, Quận Ninh Kiều, TP.Cần Thơ.</p>
+                    <p><strong>Điện thoại:</strong> 0766 968 178</p>
+                    <p><strong>Email:</strong> tiemsua4ce@gmail.com</p>
+                    <p><strong>Mã số thuế:</strong> 0105330703</p>
+                </div>
+    
+                <!-- Về KidsPlaza -->
+                <div class="footer-col">
+                    <h4>VỀ TIỆM SỮA 4CE</h4>
+                    <ul>
+                        <li><a href="/pages/gioithieu.html">Giới thiệu Tiệm sữa 4CE </a></li>
+                        <li><a href="/sanpham/product.html">Danh sách các sản phẩm</a></li>
+                        <li><a href="https://eva.vn/kien-thuc-nuoi-con-p2885c10.html">Kiến thức nuôi con</a></li>
+                    </ul>
+                </div>
+    
+                <!-- Hỗ trợ khách hàng -->
+                <div class="footer-col">
+                    <h4>HỖ TRỢ KHÁCH HÀNG</h4>
+                    <ul>
+                        <li><a href="#">Phương thức thanh toán</a></li>
+                        <li><a href="#">Phương thức giao hàng</a></li>
+                        <li><a href="/pages/contact.html">Gửi góp ý / Khiếu nại</a></li>
+                    </ul>
+                </div>
+    
+                <!-- Nhận tin khuyến mãi -->
+                <div class="footer-col subscribe">
+                    <h4>HÌNH THỨC VẬN CHUYỂN</h4>
+                    <div class="payment-methods">
+                        <img src="https://static.ybox.vn/2022/5/1/1652680275506-logo%20ghtk.jpg">
+                        <img src="https://static.ybox.vn/2022/8/0/1661672485409-GHN_logo-01.png">
+                        <img src="https://reviewphongtap.com/wp-content/uploads/2020/03/ahamove-la-gi-1.png">
+                    </div>
+    
+                    <h4>PHƯƠNG THỨC THANH TOÁN</h4>
+                    <div class="payment-methods">
+                        <img src="https://sv0.vacdn.link/user_libraries/shipcod.png" alt="MoMo">
+                        <img src="https://www.goldtek.vn/wp-content/uploads/2020/10/zalopay-logo.png" alt="ZaloPay">
+                    </div>
+                </div>
+            </div>
+    
+            <!-- Dòng dưới cùng -->
+            <div class="footer-bottom">
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                    <a href="#"><i class="fab fa-tiktok"></i></a>
+                    <a href="#"><i class="fab fa-shopify"></i></a>
+                </div>
+                <div class="certification">
+                    <img src="https://dangkywebvoibocongthuong.com/wp-content/uploads/2021/11/logo-da-thong-bao-bo-cong-thuong.png" alt="Đã thông báo Bộ Công Thương">
+                </div>
+                <p>Bản quyền © 2025 Tiệm sữa 4CE</p>
+            </div>
+        </div>
+    </footer>
+    
+</body>
+</html>

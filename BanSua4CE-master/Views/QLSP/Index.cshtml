@@ -1,0 +1,108 @@
+﻿@model IEnumerable<BanSua4CE.Data.SanPham>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Danh Sách Các Sản Phẩm</h1>
+
+
+<p>
+    <a asp-action="Create" asp-controller="QLSP" class="btn btn-sm btn-primary">Thêm Sản Phẩm</a>
+</p>
+
+
+<form asp-action="Index" method="get" class="mb-4" id="filterForm">
+    <div class="input-group w-75 gap-2">
+
+        <!-- Ô tìm kiếm -->
+        <input type="text" name="searchString" value="@ViewData["CurrentFilter"]" class="form-control" placeholder="Tìm theo tên hoặc mô tả..." />
+        <button type="submit" name="actionType" value="search" class="btn btn-outline-success">Tìm kiếm</button>
+
+
+        <!-- Dropdown lọc trạng thái -->
+        <select name="trangThaiLoc" class="form-select">
+            <option value="">-- Tất cả --</option>
+            <option value="1" selected="@(ViewData["TrangThaiLoc"]?.ToString() == "1")">Còn hoạt động</option>
+            <option value="0" selected="@(ViewData["TrangThaiLoc"]?.ToString() == "0")">Không hoạt động</option>
+        </select>
+
+        <!-- Nút tìm và lọc -->
+        <button type="submit" name="actionType" value="filter" class="btn btn-outline-primary">Lọc</button>
+    </div>
+</form>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                <label>Mã</label>
+            </th>
+            <th>
+                <label>Tên SP</label>
+            </th>
+            <th>
+                <label>Giá</label>
+            </th>
+            <th>
+                <label>Mô Tả</label>
+            </th>
+            <th>
+                <label>Xuất Xứ</label>
+            </th>
+            <th>
+                <label>Hình Ảnh</label>
+            </th>
+          
+            <th>
+                @Html.DisplayNameFor(model => model.IdDanhMuc)
+            </th>
+
+            <th><label>Trạng Thái</label></th>
+
+            <th>
+                <label>Thao Tác</label>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdSp)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TenSp)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DonGia)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MoTa)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.XuatXu)
+            </td>
+            <td>
+                 <img src="~/hinhanh/@item.HinhAnh" width="80px"/>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdDanhMuc)
+            </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+                <td>
+                    <div class="d-flex gap-2">
+                        <a asp-action="Edit" asp-controller="QLSP" asp-route-id="@item.IdSp" class="btn btn-sm btn-warning">Edit</a>
+                        <a asp-action="Delete" asp-controller="QLSP" asp-route-id="@item.IdSp" class="btn btn-sm btn-danger ">Delete</a>
+                        <a asp-action="Details" asp-controller="QLSP" asp-route-id="@item.IdSp" class="btn btn-sm btn-primary">Details</a>
+                    </div>
+                </td>
+
+        </tr>
+}
+    </tbody>
+</table>

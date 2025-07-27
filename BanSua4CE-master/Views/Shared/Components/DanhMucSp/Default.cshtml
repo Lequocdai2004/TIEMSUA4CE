@@ -1,0 +1,41 @@
+﻿
+@{
+    ViewData["Title"] = "Default";
+}
+
+@using BanSua4CE.Data
+
+@model IEnumerable<BanSua4CE.Data.DanhMuc>
+@* 
+<div class="category-container">
+    <h4>Danh Mục Sản Phẩm</h4>
+    <ul class="category-list">
+
+        @foreach (var item in Model)
+        {
+            <li onclick="filterProducts('')"><i class="fas fa-mobile-alt"></i><a asp-controller="Product" asp-action="SanPhamTheoDM" asp-route-id="@item.IdDanhMuc">  @item.TenDanhMuc</a></li>
+
+        }
+    </ul>
+</div>
+
+ *@
+
+
+
+<link rel="stylesheet" href="~/HETHONGVACONGNGHEWEB/lienket/css/danhmuc2.css">
+
+<div class="category-container">
+    <h4>Danh Mục Sản Phẩm</h4>
+    <ul class="category-list">
+        @foreach (var item in Model)
+        {
+            <li onclick="filterProducts('')">
+                <i class="fas fa-mobile-alt"></i>
+                <a asp-controller="Product" asp-action="SanPhamTheoDM" asp-route-id="@item.IdDanhMuc">
+                    @item.TenDanhMuc
+                </a>
+            </li>
+        }
+    </ul>
+</div>

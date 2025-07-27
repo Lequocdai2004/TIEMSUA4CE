@@ -1,0 +1,269 @@
+﻿@model IEnumerable<BanSua4CE.ViewModels.GioHangVM>
+
+@{
+    ViewData["Title"] = "TrangGioHang";
+}
+
+
+
+
+
+ 
+    <!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>EShopper - Bootstrap Shop Template</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="Free HTML Templates" name="keywords">
+    <meta content="Free HTML Templates" name="description">
+
+    <!-- Favicon -->
+    <link href="img/favicon.ico" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet"> 
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="~/HETHONGVACONGNGHEWEB/lienket/css/stylecart.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/HETHONGVACONGNGHEWEB/lienket/css/style.css">
+
+</head>
+
+<body>
+    <script src="~/HETHONGVACONGNGHEWEB/lienket/js/script.js"></script>
+    <!-- Cart Start -->
+    <div class="container-fluid pt-5">
+        <div class="row px-xl-5">
+            <div class="col-lg-8 table-responsive mb-5">
+                <table class="table table-bordered text-center mb-0">
+                    <thead class="bg-secondary text-dark">
+                        <tr>
+                            <th>Sản Phẩm</th>
+                            <th>Giá</th>
+                            <th>Số Lượng</th>
+                            <th>Tổng Cộng</th>
+                            <th>Xóa</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @if (Model.Any())
+                        {
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td class="align-middle">
+                                        <img src="~/hinhanh/@item.HinhAnh" alt="@item.TenSp" style="width: 50px;"> @item.TenSp
+                                    </td>
+                                    <td class="align-middle">@item.DonGia.ToString("#,##") VNĐ</td>
+                                    <td class="align-middle">
+                                        <div class="input-group quantity mx-auto" style="width: 100px;">
+                                            <div class="input-group-btn">
+                                                <a asp-controller="GioHang" asp-action="GiamSoLuong" asp-route-id="@item.IdSp">
+                                                    <button class="btn btn-sm btn-primary btn-minus">
+                                                        <i class="fa fa-minus"></i>
+                                                    </button>
+                                                </a>
+                                            </div>
+                                            <input type="text" class="form-control form-control-sm bg-secondary text-center" value="@item.SoLuong">
+                                            <div class="input-group-btn">
+                                                <a asp-action="TangSoLuong" asp-controller="GioHang" asp-route-id="@item.IdSp">
+                                                    <button class="btn btn-sm btn-primary btn-plus">
+                                                        <i class="fa fa-plus"></i>
+                                                    </button>
+                                                </a>
+                                            </div>
+                                        </div> 
+                                    </td>
+                                    <td class="align-middle">@item.ThanhTien.ToString("#,##") VNĐ</td>
+                                    <td class="align-middle">
+                                        <form method="post" action="@Url.Action("XoaGioHang", "GioHang")">
+                                            <input type="hidden" name="id" value="@item.IdSp" />
+                                            <button type="submit" class="btn btn-sm btn-danger">
+                                                <i class="fa fa-times"></i>
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="5" class="text-center text-danger">
+                                    <h5>Không có sản phẩm trong giỏ hàng</h5>
+                                </td>
+                            </tr>
+
+                        }
+                        <a asp-action="Index" asp-controller="Product" class="btn-custom">Quay lại trang sản phẩm</a>
+                    </tbody>
+
+                   </table>
+            </div>
+            <div class="col-lg-4">
+                
+                <div class="card border-secondary mb-5">
+                    <div class="card-header bg-secondary border-0">
+                        <h4 class="font-weight-semi-bold m-0">Hóa Đơn</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between mb-3 pt-1">
+                            <h6 class="font-weight-medium">Thành Tiền</h6>
+                            <h6 class="font-weight-medium">@Model.Sum(x=>x.ThanhTien).ToString("#,##")</h6>
+                        </div>
+                    </div>
+                    <div class="card-footer border-secondary bg-transparent">
+                        <d class="d-flex justify-content-between mt-2">
+                            <h5 class="font-weight-bold">Thành Tiền</h5>
+                            <h5 class="font-weight-bold">@Model.Sum(prop => prop.ThanhTien).ToString("#,##")</h5>
+                        </div>
+                        <a asp-action="ThanhToan" asp-controller="GioHang">
+                            <button class="btn btn-block btn-primary my-3 py-3">Tiếp Tục</button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
+
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+    <script src="lib/easing/easing.min.js"></script>
+    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
+
+    <!-- Contact Javascript File -->
+    <script src="mail/jqBootstrapValidation.min.js"></script>
+    <script src="mail/contact.js"></script>
+
+    <!-- Template Javascript -->
+    <script src="~/HETHONGVACONGNGHEWEB/lienket/js/main.js"></script>
+    <script>
+        (function ($) {
+    "use strict";
+    
+    // Dropdown on mouse hover
+    $(document).ready(function () {
+        function toggleNavbarMethod() {
+            if ($(window).width() > 992) {
+                $('.navbar .dropdown').on('mouseover', function () {
+                    $('.dropdown-toggle', this).trigger('click');
+                }).on('mouseout', function () {
+                    $('.dropdown-toggle', this).trigger('click').blur();
+                });
+            } else {
+                $('.navbar .dropdown').off('mouseover').off('mouseout');
+            }
+        }
+        toggleNavbarMethod();
+        $(window).resize(toggleNavbarMethod);
+    });
+    
+    
+    // Back to top button
+    $(window).scroll(function () {
+        if ($(this).scrollTop() > 100) {
+            $('.back-to-top').fadeIn('slow');
+        } else {
+            $('.back-to-top').fadeOut('slow');
+        }
+    });
+    $('.back-to-top').click(function () {
+        $('html, body').animate({scrollTop: 0}, 1500, 'easeInOutExpo');
+        return false;
+    });
+
+
+    // Vendor carousel
+    $('.vendor-carousel').owlCarousel({
+        loop: true,
+        margin: 29,
+        nav: false,
+        autoplay: true,
+        smartSpeed: 1000,
+        responsive: {
+            0:{
+                items:2
+            },
+            576:{
+                items:3
+            },
+            768:{
+                items:4
+            },
+            992:{
+                items:5
+            },
+            1200:{
+                items:6
+            }
+        }
+    });
+
+
+    // Related carousel
+    $('.related-carousel').owlCarousel({
+        loop: true,
+        margin: 29,
+        nav: false,
+        autoplay: true,
+        smartSpeed: 1000,
+        responsive: {
+            0:{
+                items:1
+            },
+            576:{
+                items:2
+            },
+            768:{
+                items:3
+            },
+            992:{
+                items:4
+            }
+        }
+    });
+
+
+    // Product Quantity
+    $('.quantity button').on('click', function () {
+        var button = $(this);
+        var oldValue = button.parent().parent().find('input').val();
+        if (button.hasClass('btn-plus')) {
+            var newVal = parseFloat(oldValue) + 1;
+        } else {
+            if (oldValue > 0) {
+                var newVal = parseFloat(oldValue) - 1;
+            } else {
+                newVal = 0;
+            }
+        }
+        button.parent().parent().find('input').val(newVal);
+    });
+    
+})(jQuery);
+
+
+    </script>
+</body>
+
+</html> 
+
+
+

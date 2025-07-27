@@ -1,0 +1,196 @@
+﻿@using X.PagedList.Mvc.Core
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>TIỆM SỮA 4CE</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <!-- Nếu bạn dùng Bootstrap 4 -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <!-- Nếu bạn dùng Bootstrap 5 -->
+    <!-- (Không cần jQuery, Popper đã tích hợp) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+
+    <link rel="stylesheet" href="~/HETHONGVACONGNGHEWEB/lienket/css/style.css">
+    <link rel="stylesheet" href="~/HETHONGVACONGNGHEWEB/lienket/css/danhmuc.css">
+    <script src="~/HETHONGVACONGNGHEWEB/lienket/js/main.js"></script>
+
+</head>
+
+<script src="~/HETHONGVACONGNGHEWEB/lienket/js/script.js"></script>
+
+
+
+<body>
+
+
+    @{
+        var tenkh = Context.Session.GetString("TenKh");
+    }
+    <header>
+        <nav class="header-container ">
+            <nav class="navbar navbar-top"></nav>
+
+            <nav class="navbar navbar-expand-lg navbar-light navbar-main">
+                <a class="navbar-brand d-flex align-items-center">
+                    <img src="~/HETHONGVACONGNGHEWEB/PNG/logo.png" alt="Logo" class="logo-img">
+                    <span class="highlight">TIỆM SỮA 4CE</span>
+                </a>
+
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+              
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav">
+                        @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item"><a class="nav-link" asp-controller="QLSP" asp-action="Index">Quản lý Sản Phẩm</a></li>
+                            <li class="nav-item"><a class="nav-link" asp-controller="QLDM" asp-action="Index">Quản lý Danh Mục</a></li>
+                            <li class="nav-item"><a class="nav-link" asp-controller="QLND" asp-action="Index">Quản lý Khách Hàng</a></li>
+                            <li class="nav-item"><a class="nav-link" asp-controller="QLDM" asp-action="QLDonHang">Quản lý Đơn Hàng</a></li>
+
+                        }
+                        else
+                        {
+                        <li class="nav-item"><a class="nav-link" asp-controller="Home" asp-action="Index">Trang Chủ</a></li>
+                        <li class="nav-item"><a class="nav-link" asp-controller="Product" asp-action="Index">Sản Phẩm</a></li>
+                        <li class="nav-item"><a class="nav-link" asp-controller="Home" asp-action="Contact">Liên Hệ</a></li>
+                        <li class="nav-item"><a class="nav-link" asp-controller="Home" asp-action="GioiThieu">Giới Thiệu</a></li>
+                     
+
+                         }
+                          
+                       
+                    </ul>
+                   
+                    <form class="form-inline mx-auto search-bar" id="searchForm" action="/Product/TimKiemSP" method="GET">
+                        <div class="search-container">
+                            <input class="form-control" id="searchText" name="query" type="search" placeholder="Ba mẹ tìm kiếm gì cho con hôm nay" aria-label="Search">
+                            <button type="submit" class="search-icon">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </form>
+
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        if (User.IsInRole("Admin"))
+                        {
+                            <div class="d-flex align-items-center gap-2">
+                                <span class="text-dark">👋<strong>@User.Identity.Name</strong> (Quản trị)</span>
+                            </div>
+                            <a class="nav-link" asp-action="DangXuat" asp-controller="TaiKhoan">Đăng Xuất</a>
+
+                        }
+                        else
+                        {
+                            <div class="d-flex align-items-center gap-2">
+                                <span class="text-dark">👋 Xin chào, <strong>@User.Identity.Name</strong></span>
+                                <a class="nav-link" asp-action="DangXuat" asp-controller="TaiKhoan">Đăng Xuất</a>
+                            </div>
+                            <div class="d-flex align-items-center gap-2">
+                               <a class="nav-link" asp-controller="TaiKhoan" asp-action="LichSuDonHang">Lịch sử đơn hàng</a>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="nav-item dropdown">
+                            <a class="nav-link" id="productDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-user"></i> Tài Khoản
+                            </a>
+                            <div class="dropdown-menu ms-n2" aria-labelledby="productDropdown">
+                                <a class="dropdown-item" asp-action="DangNhap" asp-controller="TaiKhoan">
+                                    <i class="fas fa-sign-in-alt"></i> Đăng Nhập
+                                </a>
+                                <a class="dropdown-item" asp-action="DangKy" asp-controller="TaiKhoan">
+                                    <i class="fas fa-user-plus"></i> Đăng Ký
+                                </a>
+                            </div>
+                        </div>
+                    }
+
+                    <a class="nav-link text-white" asp-controller="GioHang" asp-action="TrangGioHang">
+                        <i class="fas fa-shopping-cart"></i> Giỏ hàng
+                    </a>
+                </div>
+            </nav>
+            <nav class="navbar navbar-expand-lg bg-warning">
+                <div class="container d-flex justify-content-between">
+                    <div class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="/sanpham/product.html" id="productDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-bars "></i> Danh mục sản phẩm</a>
+                        <div class="dropdown-menu" aria-labelledby="productDropdown">
+                            <a class="dropdown-item" asp-action="Index" asp-controller="Product">Tất cả sản phẩm</a>
+                            <a class="dropdown-item" asp-controller="Product" asp-action="SanPhamTheoDM" asp-route-id="1">Abbout</a>
+                            <a class="dropdown-item" asp-controller="Product" asp-action="SanPhamTheoDM" asp-route-id="2">Healthycare</a>
+                            <a class="dropdown-item" asp-controller="Product" asp-action="SanPhamTheoDM" asp-route-id="3">Nestle</a>
+                            <a class="dropdown-item" asp-controller="Product" asp-action="SanPhamTheoDM" asp-route-id="4">Aptamil</a>
+                            <a class="dropdown-item" asp-controller="Product" asp-action="SanPhamTheoDM" asp-route-id="5">Meiji</a>
+                            <a class="dropdown-item" asp-controller="Product" asp-action="SanPhamTheoDM" asp-route-id="6">Friso</a>
+                            <a class="dropdown-item" asp-controller="Product" asp-action="SanPhamTheoDM" asp-route-id="7">Vinamilk</a>
+                            <a class="dropdown-item" asp-controller="Product" asp-action="SanPhamTheoDM" asp-route-id="8">Nutifood</a>
+                            <a class="dropdown-item" asp-controller="Product" asp-action="SanPhamTheoDM" asp-route-id="9">THtruemilk</a>
+                            <a class="dropdown-item" asp-controller="Product" asp-action="SanPhamTheoDM" asp-route-id="10">Hipp</a>
+                            <a class="dropdown-item" asp-controller="Product" asp-action="SanPhamTheoDM" asp-route-id="11">Nutricare</a>
+                            <a class="dropdown-item" asp-controller="Product" asp-action="SanPhamTheoDM" asp-route-id="12">Enfa</a>
+                        </div>
+                    </div>
+
+                    <a style="color:  color: hwb(230 6% 33%) !important" href="#" class="nav-link"><i class="fas fa-store"></i> Zalo cửa hàng</a>
+
+                    <a style="color:  color: hwb(230 6% 33%) !important" href="#" class="nav-link"><i class="fas fa-phone"></i> Hotline: 1800.3979</a>
+                </div>
+            </nav>
+
+
+
+        </nav>
+    </header>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+    <script>
+        $(document).ready(function () {
+            $("#searchText").on("input", function () {
+                let query = $(this).val().trim();
+
+                if (query.length > 0) {
+                    $.ajax({
+                        url: "/Product/TimKiemSP",
+                        type: "GET",
+                        data: { query: query },
+                        success: function (data) {
+                            $("#searchResults").html(data);
+                        },
+                        error: function () {
+                            console.error("Lỗi khi tìm kiếm sản phẩm!");
+                        }
+                    });
+                } else {
+                    $("#searchResults").html("");
+                }
+            });
+        });
+    </script>
+
+
+         @RenderBody()
+
+    @RenderSection("Scripts", required: false)
+    @await Html.PartialAsync("_Footer");
+</body>
+</html>

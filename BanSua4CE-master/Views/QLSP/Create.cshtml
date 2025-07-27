@@ -1,0 +1,60 @@
+﻿ @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@model BanSua4CE.Data.SanPham
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Thêm thông tin</h1>
+
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label class="control-label">Tên Sản Phẩm</label>
+                <input asp-for="TenSp" class="form-control" />
+                <span asp-validation-for="TenSp" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label  class="control-label">Đơn Giá</label>
+                <input asp-for="DonGia" class="form-control" type="number" min="0" />
+                <span asp-validation-for="DonGia" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Mô Tả</label>
+                <input asp-for="MoTa" class="form-control" />
+                <span asp-validation-for="MoTa" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Xuất Xứ</label>
+                <input asp-for="XuatXu" class="form-control" />
+                <span asp-validation-for="XuatXu" class="text-danger"></span>
+            </div>
+            <div class="form-item">
+                <label class="form-label my-3" for="hinhanh">Hình Ảnh<sup>*</sup></label>
+                <input type="file" name="hinhanh" class="form-control" required/>
+            </div>
+            <div class="form-group">
+                <label  class="control-label"> Mã Danh Mục</label>
+                <select asp-for="IdDanhMuc" class ="form-control" asp-items="ViewBag.IdDanhMuc"></select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-sm btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index" class="btn btn-sm btn-warning">Quay lại</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+} 
+

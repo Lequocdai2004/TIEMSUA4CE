@@ -1,0 +1,184 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+@using BanSua4CE.Data
+@model List<SanPham>
+
+
+
+
+
+@using X.PagedList.Mvc.Core
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TIỆM SỮA 4CE</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="~/HETHONGVACONGNGHEWEB/lienket/css/style.css">
+
+</head>
+
+<script src="~/HETHONGVACONGNGHEWEB/lienket/js/script.js"></script>
+
+
+<body>
+    <main class="container mt-5">
+        <div class="hero">
+            <div class="hero-slider">
+                <button class="prev-btn">&#10094;</button>
+                <div class="slides">
+                    <img src="https://cdn1.concung.com/img/adds/2025/02/1740064735-web-homepage-main-banner-1960x640.jpg" class="slide active">
+                    <img src="https://cdn1.concung.com/img/adds/2025/02/1740070398-home-nan-optipro.png" class="slide">
+                    <img src="https://cdn1.concung.com/img/adds/2025/02/1740059494-home-1.png" class="slide">
+                    <img src="https://cdn1.concung.com/img/adds/2025/02/1740586510-home.png" class="slide">
+                </div>
+                <button class="prev-btn" onclick="prevSlide()">❮</button>
+                <button class="next-btn" onclick="nextSlide()">❯</button>
+            </div>
+        </div>
+
+        <section class="products">
+            <h5 style="color: #3909a9 !important">Thương hiệu</h5>
+            <div class="tab-content" id="productTabContent">
+                <div class="tab-pane fade show active" id="powder-milk" role="tabpanel" aria-labelledby="powder-milk-tab">
+                    <div class="d-flex flex-wrap justify-content-between">
+
+                        <div class="card brand-card">
+                            <a asp-action="SanPhamTheoDM" asp-controller="Product" asp-route-id="1">
+                                <img src="https://mma.prnewswire.com/media/271488/Abbott_Logo.jpg?p=facebook" class="card-img-top" alt="Sữa Bột 1">
+                            </a>
+                        </div>
+
+                        <div class="card brand-card">
+                            <a asp-controller="Product" asp-action="SanPhamTheoDM" asp-route-id="2">
+                                <img src="https://healthycarevietnam.com.vn/wp-content/uploads/2023/04/logo-htc-1024x363.png" class="card-img-top" alt="Sữa Bột 1">
+                            </a>
+                        </div>
+
+                        <div class="card brand-card">
+                            <a asp-controller="Product" asp-action="SanPhamTheoDM" asp-route-id="3">
+                                <img src="http://tous-logos.com/wp-content/uploads/2018/01/Nestl%C3%A9-Logo.png" class="card-img-top" alt="Sữa Bột 1">
+                            </a>
+                        </div>
+
+                        <div class="card brand-card">
+                            <a asp-action="SanPhamTheoDM" asp-controller="Product" asp-route-id="4">
+                                <img src="https://logowik.com/content/uploads/images/aptamil1714.jpg" class="card-img-top" alt="Sữa Bột 1">
+                            </a>
+                        </div>
+
+                        <div class="card brand-card">
+                            <a asp-controller="5" asp-action="SanPhamTheoDM" asp-route-id="5">
+                                <img src="https://download.logo.wine/logo/Meiji_Seika/Meiji_Seika-Logo.wine.png" class="card-img-top" alt="Sữa Bột 1">
+                            </a>
+                        </div>
+
+                        <div class="card brand-card">
+                            <a asp-action="SanPhamTheoDM" asp-controller="Product" asp-route-id="6">
+
+                                <img src="https://www.popai-global.com/wp-content/uploads/2018/06/friso-logo.jpg" class="card-img-top" alt="Sữa Bột 1">
+                            </a>
+                        </div>
+
+                        <div class="card brand-card">
+                            <a asp-controller="Product" asp-action="SanPhamTheoDM" asp-route-id="7">
+                                <img src="https://i.gyazo.com/9f14dbd7ca70d82102cff05cfadf77a7.png" class="card-img-top" alt="Sữa Bột 1">
+                            </a>
+                        </div>
+
+                        <div class="card brand-card">
+                            <a asp-controller="Product" asp-action="SanPhamTheoDM" asp-route-id="8">
+                                <img src="https://forbes.vn/wp-content/uploads/2022/08/LogoTop25fnb_nutifood.jpg" class="card-img-top" alt="Sữa Bột 1">
+                            </a>
+                        </div>
+
+                        <div class="card brand-card">
+                            <a asp-controller="Product" asp-action="SanPhamTheoDM" asp-route-id="9">
+                                <img src="https://thanhs.com.vn/wp-content/uploads/2020/09/image1-1.png" class="card-img-top" alt="Sữa Bột 1">
+                            </a>
+                        </div>
+
+                        <div class="card brand-card">
+                            <a asp-controller="Product" asp-action="SanPhamTheoDM" asp-route-id="10">
+                                <img src="https://cdn.tgdd.vn/Files/2023/01/28/1504986/bao-ve-he-tieu-hoa-cho-be-voi-sua-hipp-combiotic-den-tu-chau-au-202301281029486486.jpg" class="card-img-top" alt="Sữa Bột 1">
+                            </a>
+                        </div>
+
+                        <div class="card brand-card">
+                            <a asp-controller="Product" asp-action="SanPhamTheoDM" asp-route-id="11">
+                                <img src="https://cdn.nhanlucnganhluat.vn/uploads/images/19A2C2B0/logo/2022-03/Logo%20Nutricare-01.png" class="card-img-top" alt="Sữa Bột 1">
+                            </a>
+                        </div>
+
+                        <div class="card brand-card">
+                            <a asp-controller="Product" asp-action="SanPhamTheoDM" asp-route-id="12">
+                                <img src="http://file.hstatic.net/200000315451/collection/7185121e-2db2-411c-8cfe-81d62089a5ca_58daacb3ea634b0d9100fe9aa64dd54a.jpg" class="card-img-top" alt="Sữa Bột 1">
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="products">
+            <h5 style="color: #3909a9 !important">Sản Phẩm</h5>
+            <div class="tab-content" id="productList">
+                <div class="tab-pane fade show active" id="powder-milk" role="tabpanel" aria-labelledby="powder-milk-tab">
+                    <div class="d-flex flex-wrap">
+
+                    @foreach (var item in Model)
+                    {
+                        <div class="product-card">
+                            <a asp-controller="Product" asp-action="ChiTietSanPham" asp-route-id="@item.IdSp">
+                                <img src="~/hinhanh/@item.HinhAnh" alt="@item.TenSp">
+                            </a>
+                            <p>@item.TenSp </p>
+
+                            <p style="color: red !important;">Giá: @item.DonGia.ToString("#,##") VNĐ</p>
+
+                            <p>Xuất Xứ: @item.XuatXu</p>
+                            <div class="cart-container">
+                               <button class="btn btn-primary cart-btn" onclick="addToCart(@item.IdSp)">
+                                    <i class="fas fa-shopping-cart"></i>
+                               </button>
+                            </div>                                                      
+                        </div>
+                    }
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+</body>
+<script>
+    function addToCart(productId) {
+        // Gửi yêu cầu AJAX để thêm sản phẩm vào giỏ hàng
+        $.ajax({
+            url: '@Url.Action("ThemGioHang", "GioHang")', // Đường dẫn đến action AddToCart trong controller GioHang
+            type: 'POST',
+            data: { id: productId },
+            success: function (response) {
+                // Nếu thêm thành công, chuyển hướng đến trang giỏ hàng
+                window.location.href = '@Url.Action("TrangGioHang", "GioHang")';
+            },
+            error: function (xhr, status, error) {
+                // Xử lý lỗi nếu có
+                alert('Có lỗi xảy ra khi thêm sản phẩm vào giỏ hàng.');
+            }
+        });
+    }
+</script>
+
+</html>
+
+
+
+
+
+

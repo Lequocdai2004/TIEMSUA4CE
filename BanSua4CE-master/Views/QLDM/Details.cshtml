@@ -1,0 +1,29 @@
+﻿@model BanSua4CE.Data.DanhMuc
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Thông tin danh mục</h1>
+
+<div>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.TenDanhMuc)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.TenDanhMuc)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.TrangThai)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.TrangThai)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.IdDanhMuc" class="btn btn-sm btn-danger">Edit</a> |
+    <a asp-action="Index" class="btn btn-sm btn-warning">Quay Lại</a>
+</div>

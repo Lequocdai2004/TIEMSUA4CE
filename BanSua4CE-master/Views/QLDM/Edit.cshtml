@@ -1,0 +1,40 @@
+﻿@model BanSua4CE.Data.DanhMuc
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Cập nhật thông tin danh mục</h1>
+
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="IdDanhMuc" />
+            <div class="form-group">
+                <label class="control-label">Tên Danh Mục</label>
+                <input asp-for="TenDanhMuc" class="form-control" />
+                <span asp-validation-for="TenDanhMuc" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Trạng thái</label>
+                <select asp-for="TrangThai" class="form-control">
+                    <option value="true">Hiển thị</option>
+                    <option value="false">Ẩn</option>
+                </select>
+            </div>
+
+
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index" class="btn btn-sm btn-warning">Quay lại</a>
+</div>
+

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TIỆM SỮA 4CE</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+   
+    <link rel="stylesheet" href="/lienket/css/style.css">
+</head>
+
+<script src="/lienket/js/script.js"></script>
+
+<body>
+    <div id="header"></div>
+
+    <!-- Hộp thoại đăng nhập -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Đăng nhập bằng SMS</h2>
+            <p>Nhập số điện thoại bạn đã đăng ký tài khoản, 4CE sẽ gửi mã OTP để đăng nhập</p>
+
+            <label for="phone">Số điện thoại</label>
+            <div class="phone-input">
+                <img src="/PNG/co.png" alt="VN Flag" class="flag-icon"> +84
+                <input type="text" id="phone" placeholder="Nhập số điện thoại">
+            </div>            
+
+            <button id="sendOTP">GỬI OTP</button>
+
+            <hr>
+            <p>Hoặc</p>
+            <p><a href="#">Chưa có tài khoản? Đăng ký ngay!</a></p>
+        </div>
+    </div>
+
+</body>
+</html>

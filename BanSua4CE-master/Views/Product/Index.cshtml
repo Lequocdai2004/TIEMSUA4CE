@@ -1,0 +1,86 @@
+﻿@using BanSua4CE.Data
+@using X.PagedList
+@using X.PagedList.Mvc.Core
+@{
+    ViewData["Title"] = "DanhSachSanPham";
+}
+@model X.PagedList.IPagedList<BanSua4CE.Data.SanPham>
+
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TIỆM SỮA 4CE</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="~/HETHONGVACONGNGHEWEB/lienket/css/style.css">
+</head>
+
+<script src="~/HETHONGVACONGNGHEWEB/lienket/js/script.js"></script>
+
+<body>
+
+    <div class="main-container">
+        <!-- Danh mục sản phẩm -->
+        @await Component.InvokeAsync("DanhMucSp")
+            <div class="product-container">
+                <div class="product-grid">
+                    <!-- Sản phẩm 1 -->
+                    @foreach (var item in Model)
+                    {
+                        <div class="product-card">
+                            <a asp-controller="Product" asp-action="ChiTietSanPham" asp-route-id="@item.IdSp">
+                                <img src="~/hinhanh/@item.HinhAnh" alt="@item.TenSp">
+                            </a>
+                            <p>@item.TenSp </p>
+
+                            <p style="color: red !important;">Giá: @item.DonGia.ToString("#,##") VNĐ</p>
+
+                            <p>Xuất Xứ: @item.XuatXu</p>
+                            <div class="cart-container">
+                                <button class="btn btn-primary cart-btn" onclick="addToCart(@item.IdSp)">
+                                    <i class="fas fa-shopping-cart"></i>
+                                </button>
+                            </div>                           
+                        </div>
+
+                        
+                   
+                        
+                    }
+                </div>
+            </div>
+    </div>
+    <div class="pagination">
+          @Html.PagedListPager(Model,page => Url.Action("Index",new {page}))
+    </div>
+</body>
+
+<script>
+    function addToCart(productId) {
+        // Gửi yêu cầu AJAX để thêm sản phẩm vào giỏ hàng
+        $.ajax({
+            url: '@Url.Action("ThemGioHang", "GioHang")', // Đường dẫn đến action AddToCart trong controller GioHang
+            type: 'POST',
+            data: { id: productId },
+            success: function (response) {
+                // Nếu thêm thành công, chuyển hướng đến trang giỏ hàng
+                window.location.href = '@Url.Action("TrangGioHang", "GioHang")';
+            },
+            error: function (xhr, status, error) {
+                // Xử lý lỗi nếu có
+                alert('Có lỗi xảy ra khi thêm sản phẩm vào giỏ hàng.');
+            }
+        });
+    }
+</script>
+
+</html>
+
+
+

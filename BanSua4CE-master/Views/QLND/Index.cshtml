@@ -1,0 +1,59 @@
+﻿@model IEnumerable<BanSua4CE.Data.KhachHang>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Danh sách khách hàng</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-sm btn-primary">Thêm thông tin</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                <label>Tên Khách Hàng</label>
+            </th>
+            <th>
+                <label>Email</label>
+            </th>
+            <th>
+                <label>Địa Chỉ</label>
+            </th>
+            <th>
+                <label>Số Điện Thoại</label>
+            </th>
+            <th>
+               <label>Mật Khẩu</label>
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.TenKh)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DiaChi)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SoDienThoai)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MatKhau)
+            </td>
+            <td>
+                    <a asp-action="Edit" asp-route-id="@item.IdKh" class="btn btn-sm btn-primary">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.IdKh" class="btn btn-sm btn-primary">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.IdKh" class="btn btn-sm btn-primary">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
